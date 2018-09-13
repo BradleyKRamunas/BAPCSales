@@ -24,10 +24,33 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Material design library
+    implementation 'com.google.android.material:material:1.0.0-rc01'
+
+    // Various default Google libraries
     implementation 'androidx.appcompat:appcompat:1.0.0-rc02'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-rc01'
+
+    // KTX
+    implementation 'androidx.core:core-ktx:1.0.0-rc02'
+
+    // RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.4.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
+
+    // Moshi
+    //implementation 'com.squareup.moshi:moshi:1.6.0'
+    //implementation 'com.squareup.moshi:moshi-kotlin:1.6.0'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
