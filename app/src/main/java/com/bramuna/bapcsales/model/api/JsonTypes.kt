@@ -1,26 +1,41 @@
 package com.bramuna.bapcsales.model.api
 
+import android.util.Log
 import com.squareup.moshi.Json
+import java.text.SimpleDateFormat
+import java.util.*
 
 data class SubredditPosts(
-        @field:Json(name = "kind") val kind: String,
-        @field:Json(name = "data") val data: InnerSubredditData)
+        @Json(name = "kind") val kind: String,
+        @Json(name = "data") val data: InnerSubredditData)
 
 data class InnerSubredditData(
-        @field:Json(name = "children") val children: List<SalePost>)
+        @Json(name = "children") val children: List<SalePost>)
 
 data class SalePost(
-        @field:Json(name = "kind") val kind: String,
-        @field:Json(name = "data") val data: PostData)
+        @Json(name = "kind") val kind: String,
+        @Json(name = "data") val data: PostData)
 
 data class PostData(
-        @field:Json(name = "title") val title: String? = "No Title", // post title
-        @field:Json(name = "hide_score") val hide_score: Boolean = false, // whether the post's score is hidden
-        @field:Json(name = "domain") val domain: String? = "No Domain", // domain of the link (i.e. amazon.com)
-        @field:Json(name = "link_flair_text") val link_flair_text: String? = "No Flair", // text of the flair, determines sale type
-        @field:Json(name = "score") val score: Int = 0, // current score of the post
-        @field:Json(name = "over_18") val over_18: Boolean = false, // indicates whether sale has expired (not enforced)
-        @field:Json(name = "author") val author: String? = "No Author", // who created the post
-        @field:Json(name = "num_comments") val num_comments: Int = 0, // number of comments in the post
-        @field:Json(name = "url") val url: String? = "No URL", // post url
-        @field:Json(name = "created_utc") val created_utc: Double = 0.0) // number of |seconds|!! since epoch (NOT milliseconds!)
+        @Json(name = "title") val title: String? = "No Title", // post title
+        @Json(name = "hide_score") val scoreHidden: Boolean = false, // whether the post's score is hidden
+        @Json(name = "domain") val domain: String? = "No Domain", // domain of the link (i.e. amazon.com)
+        @Json(name = "link_flair_text") val flairText: String? = "No Flair", // text of the flair, determines sale type
+        @Json(name = "score") val score: Int = 0, // current score of the post
+        @Json(name = "over_18") val over_18: Boolean = false, // indicates whether sale has expired (not enforced)
+        @Json(name = "spoiler") val spoiler: Boolean = false, // indicates whether sale has expired (not enforced)
+        @Json(name = "author") val author: String? = "No Author", // who created the post
+        @Json(name = "num_comments") val commentCount: Int = 0, // number of comments in the post
+        @Json(name = "url") val url: String? = "No URL", // post url
+        @Json(name = "created_utc") val createdAt: Double = 0.0) /* // number of |seconds|!! since epoch (NOT milliseconds!) */ {
+
+
+    val isExpired: Boolean by lazy { over_18 or spoiler }
+    val postedOn: String by lazy {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = createdAt.toLong() * 1000
+        val formatter = SimpleDateFormat("EEEE, MMMM d yyyy 'at' h:mm a", Locale.US)
+        val dateString = formatter.format(calendar.time)
+        "Posted on $dateString"
+    }
+}
